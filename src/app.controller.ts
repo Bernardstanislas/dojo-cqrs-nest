@@ -13,11 +13,8 @@ export class AppController {
   }
 
   @Get('articles')
-  getArticles(): ArticleDto {
-    return {
-      name: 'lol',
-      content: 'yolo',
-    };
+  getArticles(): Promise<ArticleDto[]> {
+    return this.appService.getAllArticles();
   }
 
   @Post('articles')
