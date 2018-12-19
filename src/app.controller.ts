@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ArticleDto } from './article.dto';
 import { Article } from './article.entity';
@@ -20,5 +20,11 @@ export class AppController {
   @Post('articles')
   async createArticle(@Body() createArticleDto: ArticleDto): Promise<ArticleDto> {
     return await this.appService.storeArticle(createArticleDto);
+  }
+
+  @Get('articles/:id')
+  async getArticle(@Param() params): Promise<ArticleDto> {
+    const id = params.id;
+    return this.appService.getArticle(id);
   }
 }
