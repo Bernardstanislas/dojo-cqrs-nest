@@ -4,7 +4,7 @@ import { Article } from './article.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommandBus } from '@nestjs/cqrs';
-import { CreateArticleCommand } from './commands/implementations/article-created.command';
+import { CreateArticleCommand } from './commands/implementations/create-article.command';
 
 @Injectable()
 export class AppService {
