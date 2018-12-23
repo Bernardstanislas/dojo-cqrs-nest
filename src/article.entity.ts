@@ -25,4 +25,10 @@ export class Article extends AggregateRoot {
     newArticle.apply(articleCreatedEvent);
     return newArticle;
   }
+
+  public onArticleCreated(event: ArticleCreated): void {
+    this.id = event.aggregateId;
+    this.name = event.name;
+    this.content = event.content;
+  }
 }
