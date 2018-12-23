@@ -8,6 +8,7 @@ import { CommandBus } from '@nestjs/cqrs';
 import { EventBus } from '@nestjs/cqrs';
 import { CreateArticleHandler } from './commands/handlers/create-article.handler';
 import { ModuleRef } from '@nestjs/core';
+import { EventSaga } from './event.saga';
 
 @Module({
   imports: [
@@ -25,17 +26,19 @@ import { ModuleRef } from '@nestjs/core';
     CQRSModule,
   ],
   controllers: [AppController],
-  providers: [AppService, CreateArticleHandler],
+  providers: [AppService, CreateArticleHandler, EventSaga],
 })
 export class AppModule implements OnModuleInit {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly eventBus: EventBus,
     private readonly moduleRef: ModuleRef,
+    private readonly eventSaga: EventSaga,
   ) {}
 
   onModuleInit(): any {
     this.commandBus.setModuleRef(this.moduleRef)
     this.commandBus.register([CreateArticleHandler]);
+    this.eventBus.combineSagas([this.eventSaga.eventPublished]);
   }
 }
