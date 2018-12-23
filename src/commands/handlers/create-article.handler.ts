@@ -9,7 +9,7 @@ export class CreateArticleHandler implements ICommandHandler<CreateArticleComman
   constructor(@InjectRepository(Article) private readonly articleRepository: Repository<Article>) {}
 
   execute(command: CreateArticleCommand, resolve: (value?) => void): any {
-    const article = this.articleRepository.create(command.articleDto);
+    const article = Article.createArticle(command.articleDto.name, command.articleDto.content);
     resolve(this.articleRepository.save(article));
   }
 }

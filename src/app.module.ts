@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { Article } from './article.entity';
 import { CQRSModule } from '@nestjs/cqrs';
 import { CommandBus } from '@nestjs/cqrs';
+import { EventBus } from '@nestjs/cqrs';
 import { CreateArticleHandler } from './commands/handlers/create-article.handler';
 import { ModuleRef } from '@nestjs/core';
 
@@ -29,6 +30,7 @@ import { ModuleRef } from '@nestjs/core';
 export class AppModule implements OnModuleInit {
   constructor(
     private readonly commandBus: CommandBus,
+    private readonly eventBus: EventBus,
     private readonly moduleRef: ModuleRef,
   ) {}
 
