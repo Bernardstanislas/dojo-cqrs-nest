@@ -11,6 +11,8 @@ import { ModuleRef } from '@nestjs/core';
 import { EventSaga } from './event.saga';
 import { Event } from './event.entity';
 import { EventSourcedArticleRepository } from './event-sourced-article.repository';
+import { AddIdToCatalogHandler } from './commands/handlers/add-id-to-catalog.handler';
+import { Catalog } from './catalog.entity';
 
 @Module({
   imports: [
@@ -24,11 +26,11 @@ import { EventSourcedArticleRepository } from './event-sourced-article.repositor
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([Article, Event]),
+    TypeOrmModule.forFeature([Article, Event, Catalog]),
     CQRSModule,
   ],
   controllers: [AppController],
-  providers: [AppService, CreateArticleHandler, EventSaga, EventSourcedArticleRepository],
+  providers: [AppService, CreateArticleHandler, AddIdToCatalogHandler, EventSaga, EventSourcedArticleRepository],
 })
 export class AppModule implements OnModuleInit {
   constructor(
@@ -40,7 +42,7 @@ export class AppModule implements OnModuleInit {
 
   onModuleInit(): any {
     this.commandBus.setModuleRef(this.moduleRef)
-    this.commandBus.register([CreateArticleHandler]);
+    this.commandBus.register([CreateArticleHandler, AddIdToCatalogHandler]);
     this.eventBus.combineSagas([this.eventSaga.eventPublished]);
   }
 }

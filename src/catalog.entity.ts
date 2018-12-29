@@ -6,5 +6,5 @@ export class Catalog {
   entityName: string;
 
   @Column('json')
-  idList: string;
+  idList: string[];
 }
