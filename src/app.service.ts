@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ArticleDto } from './article.dto';
 import { Article } from './article.entity';
 import { Repository } from 'typeorm';
-import { ArticleRepository as CustomArticleRepository } from './article.repository';
+import { EventSourcedArticleRepository  } from './event-sourced-article.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateArticleCommand } from './commands/implementations/create-article.command';
@@ -12,7 +12,7 @@ export class AppService {
   constructor(
     @InjectRepository(Article) private readonly articleRepository: Repository<Article>,
     private readonly commandBus: CommandBus,
-    private readonly customArticleRepository: CustomArticleRepository,
+    private readonly eventSourcedArticleRepository: EventSourcedArticleRepository,
   ) {}
 
   getHello(): string {
@@ -29,6 +29,6 @@ export class AppService {
   }
 
   async getArticle(id: string): Promise<Article> {
-    return this.customArticleRepository.findById(id);
+    return this.eventSourcedArticleRepository.findById(id);
   }
 }

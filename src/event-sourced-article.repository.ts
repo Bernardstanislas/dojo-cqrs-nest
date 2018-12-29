@@ -6,7 +6,7 @@ import { Event } from './event.entity';
 import { ArticleEvents } from './events/namespace';
 
 @Injectable()
-export class ArticleRepository {
+export class EventSourcedArticleRepository {
   constructor(
     @InjectRepository(Event) private readonly EventRepository: Repository<Event>,
   ) {}

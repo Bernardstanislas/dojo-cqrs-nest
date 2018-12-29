@@ -10,7 +10,7 @@ import { CreateArticleHandler } from './commands/handlers/create-article.handler
 import { ModuleRef } from '@nestjs/core';
 import { EventSaga } from './event.saga';
 import { Event } from './event.entity';
-import { ArticleRepository } from './article.repository';
+import { EventSourcedArticleRepository } from './event-sourced-article.repository';
 
 @Module({
   imports: [
@@ -28,7 +28,7 @@ import { ArticleRepository } from './article.repository';
     CQRSModule,
   ],
   controllers: [AppController],
-  providers: [AppService, CreateArticleHandler, EventSaga, ArticleRepository],
+  providers: [AppService, CreateArticleHandler, EventSaga, EventSourcedArticleRepository],
 })
 export class AppModule implements OnModuleInit {
   constructor(
