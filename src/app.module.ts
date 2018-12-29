@@ -43,6 +43,9 @@ export class AppModule implements OnModuleInit {
   onModuleInit(): any {
     this.commandBus.setModuleRef(this.moduleRef)
     this.commandBus.register([CreateArticleHandler, AddIdToCatalogHandler]);
-    this.eventBus.combineSagas([this.eventSaga.eventPublished]);
+    this.eventBus.combineSagas([
+      this.eventSaga.eventPublished,
+      this.eventSaga.eventCreated,
+    ]);
   }
 }

@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 import { ArticleCreated } from './events/article-created.event';
 import { Event } from './event.entity';
 import { getRepository } from 'typeorm';
+import { AddIdToCatalogCommand } from './commands/implementations/add-id-to-catalog.command';
+import { Article } from './article.entity';
 
 @Injectable()
 export class EventSaga {
@@ -20,4 +22,12 @@ export class EventSaga {
     }));
   }
 
+  eventCreated = (eventStream: EventObservable<any>): Observable<ICommand> => {
+    return eventStream.ofType(ArticleCreated).pipe(map(event => {
+      return new AddIdToCatalogCommand(
+        Article.prototype.name,
+        event.aggregateId,
+      );
+    }));
+  }
 }
