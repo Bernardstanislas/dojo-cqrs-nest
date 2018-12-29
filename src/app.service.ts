@@ -11,7 +11,6 @@ import { Catalog } from './catalog.entity';
 @Injectable()
 export class AppService {
   constructor(
-    @InjectRepository(Article) private readonly articleRepository: Repository<Article>,
     @InjectRepository(Catalog) private readonly catalogRepository: Repository<Catalog>,
     private readonly commandBus: CommandBus,
     private readonly eventSourcedArticleRepository: EventSourcedArticleRepository,

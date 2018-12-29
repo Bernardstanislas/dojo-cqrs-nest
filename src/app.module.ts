@@ -2,7 +2,6 @@ import { Module, OnModuleInit } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Article } from './article.entity';
 import { CQRSModule } from '@nestjs/cqrs';
 import { CommandBus } from '@nestjs/cqrs';
 import { EventBus } from '@nestjs/cqrs';
@@ -26,7 +25,7 @@ import { Catalog } from './catalog.entity';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([Article, Event, Catalog]),
+    TypeOrmModule.forFeature([Event, Catalog]),
     CQRSModule,
   ],
   controllers: [AppController],
@@ -41,7 +40,7 @@ export class AppModule implements OnModuleInit {
   ) {}
 
   onModuleInit(): any {
-    this.commandBus.setModuleRef(this.moduleRef)
+    this.commandBus.setModuleRef(this.moduleRef);
     this.commandBus.register([CreateArticleHandler, AddIdToCatalogHandler]);
     this.eventBus.combineSagas([
       this.eventSaga.eventPublished,
