@@ -25,7 +25,7 @@ export class EventSaga {
   eventCreated = (eventStream: EventObservable<any>): Observable<ICommand> => {
     return eventStream.ofType(ArticleCreated).pipe(map(event => {
       return new AddIdToCatalogCommand(
-        Article.prototype.name,
+        'Article',
         event.aggregateId,
       );
     }));

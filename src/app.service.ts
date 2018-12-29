@@ -6,11 +6,13 @@ import { EventSourcedArticleRepository  } from './event-sourced-article.reposito
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateArticleCommand } from './commands/implementations/create-article.command';
+import { Catalog } from './catalog.entity';
 
 @Injectable()
 export class AppService {
   constructor(
     @InjectRepository(Article) private readonly articleRepository: Repository<Article>,
+    @InjectRepository(Catalog) private readonly catalogRepository: Repository<Catalog>,
     private readonly commandBus: CommandBus,
     private readonly eventSourcedArticleRepository: EventSourcedArticleRepository,
   ) {}
@@ -25,7 +27,15 @@ export class AppService {
   }
 
   async getAllArticles(): Promise<Article[]> {
-    return this.articleRepository.find();
+    const articleCatalog = await this.catalogRepository.findOne('Article');
+    if (!articleCatalog) {
+      return [];
+    }
+    return Promise.all(
+      articleCatalog.idList.map(
+        (id: string) => this.eventSourcedArticleRepository.findById(id),
+      ),
+    );
   }
 
   async getArticle(id: string): Promise<Article> {

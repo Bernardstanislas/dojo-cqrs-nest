@@ -8,11 +8,11 @@ import { ArticleEvents } from './events/namespace';
 @Injectable()
 export class EventSourcedArticleRepository {
   constructor(
-    @InjectRepository(Event) private readonly EventRepository: Repository<Event>,
+    @InjectRepository(Event) private readonly eventRepository: Repository<Event>,
   ) {}
 
   public async findById(aggregateId: Article['id']): Promise<Article> {
-    const articleHistory: Event[] = await this.EventRepository.find({ where: { aggregateId } });
+    const articleHistory: Event[] = await this.eventRepository.find({ where: { aggregateId } });
     const articleHistoryEvents = articleHistory.map(this.recreateEvent);
 
     const article = new Article();
